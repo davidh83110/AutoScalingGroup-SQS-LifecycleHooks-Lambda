@@ -31,17 +31,18 @@ class FindClusterName(object):
                                                                 containerInstances=[arn])
                     instance_id_keys = describe_instance['containerInstances'][0]['ec2InstanceId']
                     combined_cluster_instance_list.append(ecs_cluster_name + '///' + instance_id_keys)
-
+                    
+        print(combined_cluster_instance_list)
         for cluster_instance in combined_cluster_instance_list:
             all_cluster_name = cluster_instance.split('///')[0]
             all_instance_id = cluster_instance.split('///')[1]
 
             if all_instance_id == self.instance_id:
-                print('match', str(all_cluster_name))
                 cluster_name = all_cluster_name
                 logger.info('cluster name: ' + cluster_name)
 
                 return cluster_name
+ 
 
     
 
@@ -73,7 +74,6 @@ class EcsCluster(object):
 
 
     def ecs_handle(self):
-        print(self.cluster_name)
         ecs_res = self.ecs.list_container_instances(
             cluster=self.cluster_name
         )
