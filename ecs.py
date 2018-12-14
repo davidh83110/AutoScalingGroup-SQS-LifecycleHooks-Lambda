@@ -49,7 +49,7 @@ class FindClusterName(object):
 class EcsCluster(object):
 
     def __init__(self, to_be_drain_instance_id):
-        self.cluster_name = FindClusterName.find_cluster_name(to_be_drain_instance_id)
+        self.cluster_name = FindClusterName(to_be_drain_instance_id).find_cluster_name()
         self.ecs = boto3.client('ecs')
         self.instance_id = to_be_drain_instance_id
 

@@ -46,7 +46,7 @@ def lambda_handler(event, context):
     logger.info('starting draining container instance.....')
 
     ## start draining
-    EcsCluster.ecs_handle(to_be_drain_instance_id)
+    EcsCluster(to_be_drain_instance_id).ecs_handle()
 
     ## start completing lifecycle 
     complete_lifecycle_action(lifecycle_argument_list)
