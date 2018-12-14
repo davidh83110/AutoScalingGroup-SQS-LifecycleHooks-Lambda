@@ -3,12 +3,55 @@ import logging
 
 logger=None
 
+class FindClusterName(object):
+    
+    def __init__(self, to_be_drain_instance_id):
+        self.ecs = boto3.client('ecs')
+        self.instance_id = to_be_drain_instance_id
+        
+
+    def find_cluster_name(self):
+        all_clusters = self.ecs.list_clusters()['clusterArns']
+
+        combined_cluster_instance_list = []
+
+        for cluster_ecs in enumerate(all_clusters):
+            ecs_cluster_name = cluster_ecs.split('/')[1]
+            
+            list_all_instances = self.ecs.list_container_instances(cluster=cluster_ecs.split('/')[1])
+            all_instance_arns = list_all_instances['containerInstanceArns']
+            
+            for arn in all_instance_arns:
+            
+                if arn == []:
+                    pass
+                else:
+                    describe_instance = self.ecs.describe_container_instances(cluster=ecs_cluster_name,
+                                                                containerInstances=[arn])
+                    instance_id_keys = describe_instance['containerInstances'][0]['ec2InstanceId']
+                    combined_cluster_instance_list.append(ecs_cluster_name + '///' + instance_id_keys)
+
+        for cluster_instance in combined_cluster_instance_list:
+            all_cluster_name = cluster_instance.split('///')[0]
+            all_instance_id = cluster_instance.split('///')[1]
+            
+            if all_instance_id == self.instance_id:
+                cluster_name = all_cluster_name
+                logger.info(f'cluster name: {cluster_name}')
+
+                return cluster_name
+            else:
+                logger.error('cluster name not found from matching instance id')
+
+    
+
 class EcsCluster(object):
 
     def __init__(self, cluster_name, to_be_drain_instance_id):
-        self.cluster_name = cluster_name
+        self.cluster_name = FindClusterName.find_cluster_name(to_be_drain_instance_id)
         self.ecs = boto3.client('ecs')
         self.instance_id = to_be_drain_instance_id
+
 
 
     def describe_container_instance(self, instance_arns):
