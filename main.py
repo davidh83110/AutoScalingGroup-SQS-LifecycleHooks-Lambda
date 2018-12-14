@@ -45,6 +45,8 @@ def lambda_handler(event, context):
     lifecycle_argument_list = [lifecyclehook_name, asg_name, to_be_drain_instance_id]
     logger.info('starting draining container instance.....')
 
+
+
     ## find cluster name
     cluster_name = FindClusterName(to_be_drain_instance_id).find_cluster_name()
 
@@ -54,8 +56,11 @@ def lambda_handler(event, context):
     ## start completing lifecycle 
     complete_lifecycle_action(lifecycle_argument_list)
 
+
     logger.info('instance drained and lifecycle completed, instance will be terminate now.')
     
+    ## TODO: verify if multiple instances can drain well (decrease desired count on asg console to test)
+
     return {
         'statusCode': 200,
         'body': json.dumps('done')

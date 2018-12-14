@@ -102,6 +102,7 @@ class EcsCluster(object):
         drining_instance_task_running_count = self.describe_container_instance(to_be_drain_instance_arn)['containerInstances'][0]['runningTasksCount']
 
         while drining_instance_task_running_count == 0:
+            ## TODO: verify if this work when running count != 0
             return True
         
 
