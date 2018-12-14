@@ -47,7 +47,7 @@ class FindClusterName(object):
 
 class EcsCluster(object):
 
-    def __init__(self, cluster_name, to_be_drain_instance_id):
+    def __init__(self, to_be_drain_instance_id):
         self.cluster_name = FindClusterName.find_cluster_name(to_be_drain_instance_id)
         self.ecs = boto3.client('ecs')
         self.instance_id = to_be_drain_instance_id
@@ -72,7 +72,7 @@ class EcsCluster(object):
         logger.info(f'draining container instance...{update_response}')
 
 
-    def ecs_handle(self, cluster_name, instancd_id):
+    def ecs_handle(self):
         ecs_res = self.ecs.list_container_instances(
             cluster=self.cluster_name
         )

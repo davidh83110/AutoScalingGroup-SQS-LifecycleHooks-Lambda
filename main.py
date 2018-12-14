@@ -43,9 +43,13 @@ def lambda_handler(event, context):
     lifecycle_argument_list = [lifecyclehook_name, asg_name, to_be_drain_instance_id]
     logger.info('starting draining container instance.....')
 
-    ecs.EcsCluster.ecs_handle()
+    ## start draining
+    ecs.EcsCluster.ecs_handle(to_be_drain_instance_id)
 
+    ## start completing lifecycle 
     complete_lifecycle_action(lifecycle_argument_list)
+
+    logger.info('instance drained and lifecycle completed, instance will be terminate now.')
     
     return {
         'statusCode': 200,
