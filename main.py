@@ -3,7 +3,9 @@ import boto3
 import ecs
 import logging
 
-logger=None
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
 asg = boto3.client('autoscaling')
 
 def check_response(response):

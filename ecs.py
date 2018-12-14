@@ -1,7 +1,8 @@
 import boto3
 import logging
 
-logger=None
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 class FindClusterName(object):
     
