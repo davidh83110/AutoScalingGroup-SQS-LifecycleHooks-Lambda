@@ -37,7 +37,7 @@ class FindClusterName(object):
             all_instance_id = cluster_instance.split('///')[1]
 
             if all_instance_id == self.instance_id:
-
+                print('match', str(all_cluster_name))
                 cluster_name = all_cluster_name
                 logger.info('cluster name: ' + cluster_name)
 
@@ -57,7 +57,7 @@ class EcsCluster(object):
     def describe_container_instance(self, instance_arns):
         ecs_describe = self.ecs.describe_container_instances(
             cluster=self.cluster_name,
-            containerInstances=instance_arns
+            containerInstances=[instance_arns]
         )
 
         return ecs_describe
@@ -78,22 +78,23 @@ class EcsCluster(object):
             cluster=self.cluster_name
         )
         instance_arns = ecs_res['containerInstanceArns']
+        
+        for arn in instance_arns:
+            ecs_describe = self.describe_container_instance(arn)
 
-        ecs_describe = self.describe_container_instance(instance_arns)
-
-        for node in ecs_describe['containerInstances']:
+            for node in ecs_describe['containerInstances']:
             
-            if node['ec2InstanceId'] == self.instance_id:
-                to_be_drain_instance_arn = node['containerInstanceArn']
+                if node['ec2InstanceId'] == self.instance_id:
+                    to_be_drain_instance_arn = node['containerInstanceArn']
 
-                ### draining instance ###
-                self.drain_container_instance(to_be_drain_instance_arn)
+                    ### draining instance ###
+                    self.drain_container_instance(to_be_drain_instance_arn)
 
-                ### checking drain status ###
-                if self.check_container_instance(to_be_drain_instance_arn):
-                    logger.info(self.instance_id + ' - drain container instance done')
-                else:
-                    logger.error(self.instance_id + ' - draining container instance failed')
+                    ### checking drain status ###
+                    if self.check_container_instance(to_be_drain_instance_arn):
+                        logger.info(self.instance_id + ' - drain container instance done')
+                    else:
+                        logger.error(self.instance_id + ' - draining container instance failed')
 
 
 
@@ -103,3 +104,6 @@ class EcsCluster(object):
 
         while drining_instance_task_running_count == 0:
             return True
+        
+
+
