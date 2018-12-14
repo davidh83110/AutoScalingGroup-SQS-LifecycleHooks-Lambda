@@ -35,14 +35,13 @@ class FindClusterName(object):
         for cluster_instance in combined_cluster_instance_list:
             all_cluster_name = cluster_instance.split('///')[0]
             all_instance_id = cluster_instance.split('///')[1]
-            
+
             if all_instance_id == self.instance_id:
+
                 cluster_name = all_cluster_name
                 logger.info('cluster name: ' + cluster_name)
 
                 return cluster_name
-            else:
-                logger.error('cluster name not found from matching instance id')
 
     
 
@@ -82,6 +81,7 @@ class EcsCluster(object):
         ecs_describe = self.describe_container_instance(instance_arns)
 
         for node in ecs_describe['containerInstances']:
+            
             if node['ec2InstanceId'] == self.instance_id:
                 to_be_drain_instance_arn = node['containerInstanceArn']
 
@@ -94,7 +94,7 @@ class EcsCluster(object):
                 else:
                     logger.error(self.instance_id + ' - draining container instance failed')
             else:
-                logger.error(node["ec2InstanceId"] + ' != {self.instance_id} - intance id not found in cluster instance list')
+                logger.error(node["ec2InstanceId"] + ' != ' + self.instance_id + ' - intance id not found in cluster instance list')
 
 
     def check_container_instance(self, to_be_drain_instance_arn):
