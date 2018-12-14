@@ -47,8 +47,8 @@ class FindClusterName(object):
 
 class EcsCluster(object):
 
-    def __init__(self, to_be_drain_instance_id):
-        self.cluster_name = FindClusterName(to_be_drain_instance_id).find_cluster_name()
+    def __init__(self, to_be_drain_instance_id, cluster_name):
+        self.cluster_name = cluster_name
         self.ecs = boto3.client('ecs')
         self.instance_id = to_be_drain_instance_id
 
@@ -66,13 +66,14 @@ class EcsCluster(object):
     def drain_container_instance(self, container_instance_arn):
         update_response = self.ecs.update_container_instances_state(
             cluster=self.cluster_name,
-            containerInstances=container_instance_arn,
+            containerInstances=[container_instance_arn],
             status='DRAINING'
         )
-        logger.info('draining container instance...' + update_response)
+        logger.info('draining container instance...' + str(update_response))
 
 
     def ecs_handle(self):
+        print(self.cluster_name)
         ecs_res = self.ecs.list_container_instances(
             cluster=self.cluster_name
         )
@@ -93,8 +94,7 @@ class EcsCluster(object):
                     logger.info(self.instance_id + ' - drain container instance done')
                 else:
                     logger.error(self.instance_id + ' - draining container instance failed')
-            else:
-                logger.error(node["ec2InstanceId"] + ' != ' + self.instance_id + ' - intance id not found in cluster instance list')
+
 
 
     def check_container_instance(self, to_be_drain_instance_arn):

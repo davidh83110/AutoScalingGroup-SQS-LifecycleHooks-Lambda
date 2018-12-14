@@ -1,6 +1,6 @@
 import json
 import boto3
-from ecs import EcsCluster
+from ecs import EcsCluster, FindClusterName
 import logging
 
 logger = logging.getLogger()
@@ -45,8 +45,11 @@ def lambda_handler(event, context):
     lifecycle_argument_list = [lifecyclehook_name, asg_name, to_be_drain_instance_id]
     logger.info('starting draining container instance.....')
 
+    ## find cluster name
+    cluster_name = FindClusterName(to_be_drain_instance_id).find_cluster_name()
+
     ## start draining
-    EcsCluster(to_be_drain_instance_id).ecs_handle()
+    EcsCluster(to_be_drain_instance_id, cluster_name).ecs_handle()
 
     ## start completing lifecycle 
     complete_lifecycle_action(lifecycle_argument_list)
