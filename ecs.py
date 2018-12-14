@@ -16,7 +16,7 @@ class FindClusterName(object):
 
         combined_cluster_instance_list = []
 
-        for cluster_ecs in enumerate(all_clusters):
+        for cluster_ecs in all_clusters:
             ecs_cluster_name = cluster_ecs.split('/')[1]
             
             list_all_instances = self.ecs.list_container_instances(cluster=cluster_ecs.split('/')[1])
