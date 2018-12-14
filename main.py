@@ -32,13 +32,13 @@ def lambda_handler(event, context):
     event_body = json.loads(event['Records'][0]['body'])
 
     lifecyclehook_name = event_body['LifecycleHookName']
-    logger.info(f'Lifecycle Hooks Name: {lifecyclehook_name}')
+    logger.info('Lifecycle Hooks Name: ' + lifecyclehook_name)
 
     asg_name = event_body['AutoScalingGroupName']
-    logger.info(f'ASG Name: {asg_name}')
+    logger.info('ASG Name: ' + asg_name)
 
     to_be_drain_instance_id = event_body['EC2InstanceId']
-    logger.info(f'To be drain Instance ID: {to_be_drain_instance_id}')
+    logger.info('To be drain Instance ID: ' + to_be_drain_instance_id)
 
     lifecycle_argument_list = [lifecyclehook_name, asg_name, to_be_drain_instance_id]
     logger.info('starting draining container instance.....')

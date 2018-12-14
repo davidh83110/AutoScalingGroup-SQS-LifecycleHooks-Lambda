@@ -37,7 +37,7 @@ class FindClusterName(object):
             
             if all_instance_id == self.instance_id:
                 cluster_name = all_cluster_name
-                logger.info(f'cluster name: {cluster_name}')
+                logger.info('cluster name: ' + cluster_name)
 
                 return cluster_name
             else:
@@ -69,7 +69,7 @@ class EcsCluster(object):
             containerInstances=container_instance_arn,
             status='DRAINING'
         )
-        logger.info(f'draining container instance...{update_response}')
+        logger.info('draining container instance...' + update_response)
 
 
     def ecs_handle(self):
@@ -89,11 +89,11 @@ class EcsCluster(object):
 
                 ### checking drain status ###
                 if self.check_container_instance(to_be_drain_instance_arn):
-                    logger.info(f'{self.instance_id} - drain container instance done')
+                    logger.info(self.instance_id + ' - drain container instance done')
                 else:
-                    logger.error(f'{self.instance_id} - draining container instance failed')
+                    logger.error(self.instance_id + ' - draining container instance failed')
             else:
-                logger.error(f'{node["ec2InstanceId"]} != {self.instance_id} - intance id not found in cluster instance list')
+                logger.error(node["ec2InstanceId"] + ' != {self.instance_id} - intance id not found in cluster instance list')
 
 
     def check_container_instance(self, to_be_drain_instance_arn):
