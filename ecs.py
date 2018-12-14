@@ -100,7 +100,7 @@ class EcsCluster(object):
 
     def check_container_instance(self, to_be_drain_instance_arn):
 
-        drining_instance_task_running_count = self.describe_container_instance(to_be_drain_instance_arn)['runningTasksCount']
+        drining_instance_task_running_count = self.describe_container_instance(to_be_drain_instance_arn)['containerInstances'][0]['runningTasksCount']
 
         while drining_instance_task_running_count == 0:
             return True
