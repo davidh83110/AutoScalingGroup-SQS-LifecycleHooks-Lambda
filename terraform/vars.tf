@@ -3,3 +3,5 @@ variable "AWS_REGION" {
 }
 
 variable "asg_name" {}
+
+variable "account_id" {}
