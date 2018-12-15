@@ -29,8 +29,7 @@ def complete_lifecycle_action(lifecycle_argument_list):
 
     return None
 
-def lambda_handler(event, context):
-    
+def event_handler(event):
     event_body = json.loads(event['Records'][0]['body'])
 
     lifecyclehook_name = event_body['LifecycleHookName']
@@ -43,19 +42,22 @@ def lambda_handler(event, context):
     logger.info('To be drain Instance ID: ' + to_be_drain_instance_id)
 
     lifecycle_argument_list = [lifecyclehook_name, asg_name, to_be_drain_instance_id]
+
+    return lifecycle_argument_list
+
+def lambda_handler(event, context):
+    
+    lifecycle_argument_list = event_handler(event)
+    to_be_drain_instance_id = lifecycle_argument_list[2]
+
     logger.info('starting draining container instance.....')
-
-
 
     ## find cluster name
     cluster_name = FindClusterName(to_be_drain_instance_id).find_cluster_name()
-
     ## start draining
     EcsCluster(to_be_drain_instance_id, cluster_name).ecs_handle()
-
     ## start completing lifecycle 
     complete_lifecycle_action(lifecycle_argument_list)
-
 
     logger.info('instance drained and lifecycle completed, instance will be terminate now.')
     
