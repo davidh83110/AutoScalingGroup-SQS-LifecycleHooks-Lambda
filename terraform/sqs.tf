@@ -1,4 +1,4 @@
-data "template_file" "sqs-pllicy" {
+data "template_file" "sqs-policy" {
   template = "${file("sqs-policy.json")}"
 
   vars {
@@ -15,5 +15,5 @@ resource "aws_sqs_queue" "lifecycle-scale-in" {
   max_message_size          = 262144
   message_retention_seconds = 86400
   receive_wait_time_seconds = 0
-  policy                    = "${data.template_file.sqs-pllicy.rendered}"
+  policy                    = "${data.template_file.sqs-policy.rendered}"
 }
