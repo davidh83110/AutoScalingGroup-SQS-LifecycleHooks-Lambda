@@ -1,5 +1,6 @@
 import boto3
 import logging
+import time
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -99,11 +100,15 @@ class EcsCluster(object):
 
     def check_container_instance(self, to_be_drain_instance_arn):
 
-        drining_instance_task_running_count = self.describe_container_instance(to_be_drain_instance_arn)['containerInstances'][0]['runningTasksCount']
+        draining_instance_task_running_count = self.describe_container_instance(to_be_drain_instance_arn)['containerInstances'][0]['runningTasksCount']
 
-        while drining_instance_task_running_count == 0:
-            ## TODO: verify if this work when running count != 0
-            return True
+        while draining_instance_task_running_count != 0:
+            time.sleep(10)
+            draining_instance_task_running_count = self.describe_container_instance(to_be_drain_instance_arn)['containerInstances'][0]['runningTasksCount']
+            logger.info('now is %s containers inside, waiting for draining instances.....' % (draining_instance_task_running_count))
+
+        logger.info('container draining check == True')
+        return True
         
 
 
