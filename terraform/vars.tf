@@ -9,3 +9,7 @@ variable "asg_name" {
 variable "account_id" {
   default = "990090895087"
 }
+
+variable "lifecycle_name" {
+  default = "scale-in-lifecycle"
+}

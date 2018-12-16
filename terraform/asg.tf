@@ -8,13 +8,13 @@
 
 data "aws_autoscaling_groups" "groups" {
   filter {
-    name   = "key"
-    values = ["api"]
+    name   = "auto-scaling-group"
+    values = ["${var.asg_name}"]
   }
 }
 
 resource "aws_autoscaling_lifecycle_hook" "scale-in" {
-  name                   = "scale-in-lifecycle"
+  name                   = "${var.lifecycle_name}"
   autoscaling_group_name = "${var.asg_name}"
   default_result         = "CONTINUE"
   heartbeat_timeout      = 3600
