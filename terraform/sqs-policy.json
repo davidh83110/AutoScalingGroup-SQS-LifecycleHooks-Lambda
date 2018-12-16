@@ -1,0 +1,22 @@
+{
+    "Version": "2012-10-17",
+    "Id": "arn:aws:sqs:ap-southeast-1:${var.account_id}:${aws_sqs_queue.lifecycle-scale-in.name}/SQSDefaultPolicy",
+    "Statement": [
+        {
+        "Sid": "Sid1544608181745",
+        "Effect": "Allow",
+        "Principal": {
+            "AWS": "*"
+        },
+        "Action": "SQS:SendMessage",
+        "Resource": "arn:aws:sqs:ap-southeast-1:${var.account_id}:${aws_sqs_queue.lifecycle-scale-in.name}",
+        "Condition": {
+            "ArnEquals": {
+            "aws:SourceArn": "${data.aws_autoscaling_groups.groups.arn}"
+            }
+        }
+        }
+    ]
+}
+
+
