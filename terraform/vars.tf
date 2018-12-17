@@ -13,3 +13,7 @@ variable "account_id" {
 variable "lifecycle_name" {
   default = "scale-in-lifecycle"
 }
+
+variable "lambda_role_name" {
+  default = "LifecycleSQSLambdaRole"
+}
