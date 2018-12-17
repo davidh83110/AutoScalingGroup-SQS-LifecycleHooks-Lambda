@@ -63,8 +63,6 @@ def lambda_handler(event, context):
     complete_lifecycle_action(lifecycle_argument_list)
 
     logger.info('instance drained and lifecycle completed, instance will be terminate now.')
-    
-    ## TODO: verify if multiple instances can drain well (decrease desired count on asg console to test)
 
     return {
         'statusCode': 200,
