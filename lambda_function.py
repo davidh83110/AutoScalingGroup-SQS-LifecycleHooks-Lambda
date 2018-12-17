@@ -9,10 +9,7 @@ logger.setLevel(logging.INFO)
 asg = boto3.client('autoscaling')
 
 def check_response(response):
-    if response['ResponseMetadata']['HTTPStatusCode'] == 200:
-        return True
-    else:
-        return False
+    return int(response['ResponseMetadata']['HTTPStatusCode']) == 200
 
 def complete_lifecycle_action(lifecycle_argument_list):
     response = asg.complete_lifecycle_action(
