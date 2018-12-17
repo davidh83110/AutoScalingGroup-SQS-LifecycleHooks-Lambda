@@ -6,3 +6,8 @@ resource "aws_lambda_function" "lifecycle-sqs" {
   source_code_hash = "${base64sha256(file("../lambda_function_payload.zip"))}"
   runtime          = "python3.6"
 }
+
+resource "aws_lambda_event_source_mapping" "sqs-lambda" {
+  event_source_arn = "${aws_sqs_queue.lifecycle-scale-in.arn}"
+  function_name    = "${aws_lambda_function.lifecycle-sqs.function_name}"
+}
