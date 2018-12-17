@@ -17,3 +17,11 @@ variable "lifecycle_name" {
 variable "lambda_role_name" {
   default = "LifecycleSQSLambdaRole"
 }
+
+variable "lambda_function_name" {
+  default = "AutoScalingGroup-SQS-LifecycleHooks"
+}
+
+variable "sqs_name" {
+  default = "asg-lifecycle-scale-in"
+}
