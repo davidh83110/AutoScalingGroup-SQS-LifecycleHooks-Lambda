@@ -5,6 +5,7 @@ resource "aws_lambda_function" "lifecycle-sqs" {
   handler          = "lambda_function.lambda_handler"
   source_code_hash = "${base64sha256(file("../lambda_function_payload.zip"))}"
   runtime          = "python3.6"
+  timeout          = 600
 }
 
 resource "aws_lambda_event_source_mapping" "sqs-lambda" {

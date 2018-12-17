@@ -27,20 +27,26 @@ def complete_lifecycle_action(lifecycle_argument_list):
     return None
 
 def event_handler(event):
-    event_body = json.loads(event['Records'][0]['body'])
+    try:
+        event_body = json.loads(event['Records'][0]['body'])
 
-    lifecyclehook_name = event_body['LifecycleHookName']
-    logger.info('Lifecycle Hooks Name: ' + lifecyclehook_name)
+        lifecyclehook_name = event_body['LifecycleHookName']
+        logger.info('Lifecycle Hooks Name: ' + lifecyclehook_name)
 
-    asg_name = event_body['AutoScalingGroupName']
-    logger.info('ASG Name: ' + asg_name)
+        asg_name = event_body['AutoScalingGroupName']
+        logger.info('ASG Name: ' + asg_name)
 
-    to_be_drain_instance_id = event_body['EC2InstanceId']
-    logger.info('To be drain Instance ID: ' + to_be_drain_instance_id)
+        to_be_drain_instance_id = event_body['EC2InstanceId']
+        logger.info('To be drain Instance ID: ' + to_be_drain_instance_id)
 
-    lifecycle_argument_list = [lifecyclehook_name, asg_name, to_be_drain_instance_id]
+        lifecycle_argument_list = [lifecyclehook_name, asg_name, to_be_drain_instance_id]
 
-    return lifecycle_argument_list
+        return lifecycle_argument_list
+
+    except Exception as e:
+        logger.info(event)
+        logger.error('parse lifecycle event argument error %s' % (e))
+        return None
 
 def lambda_handler(event, context):
     

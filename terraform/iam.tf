@@ -55,6 +55,7 @@ resource "aws_iam_policy" "ecs-drain-access" {
             "Effect": "Allow",
             "Action": [
                 "ecs:UpdateContainerInstancesState",
+                "ecs:ListContainerInstances",
                 "ecs:DescribeContainerInstances",
                 "ecs:DescribeClusters",
                 "ecs:ListClusters"
