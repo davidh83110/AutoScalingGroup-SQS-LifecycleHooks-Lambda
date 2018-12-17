@@ -10,4 +10,5 @@ resource "aws_lambda_function" "lifecycle-sqs" {
 resource "aws_lambda_event_source_mapping" "sqs-lambda" {
   event_source_arn = "${aws_sqs_queue.lifecycle-scale-in.arn}"
   function_name    = "${aws_lambda_function.lifecycle-sqs.function_name}"
+  batch_size       = 1
 }
