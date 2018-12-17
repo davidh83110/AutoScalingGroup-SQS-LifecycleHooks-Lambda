@@ -54,6 +54,9 @@ def lambda_handler(event, context):
 
     ## find cluster name
     cluster_name = FindClusterName(to_be_drain_instance_id).find_cluster_name()
+    if cluster_name == []:
+        logger.error('cluster name is null')
+
     ## start draining
     EcsCluster(to_be_drain_instance_id, cluster_name).ecs_handle()
     ## start completing lifecycle 
