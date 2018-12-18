@@ -19,7 +19,7 @@ EOF
 }
 
 resource "aws_iam_policy" "asg-complete" {
-  name        = "ShoplineAsgLifecycleLambda"
+  name        = "ShoplineLambdaAsgLifecycle"
   description = "For Lambda complete Lifecycle on Asg"
 
   policy = <<EOF
@@ -104,4 +104,29 @@ resource "aws_iam_role_policy_attachment" "lambda-attach-sqs" {
 resource "aws_iam_role_policy_attachment" "lambda-attach-execute" {
   role       = "${aws_iam_role.iam_for_lambda.name}"
   policy_arn = "arn:aws:iam::aws:policy/AWSLambdaExecute"
+}
+
+resource "aws_iam_role" "iam_for_asg_notification" {
+  name = "${var.asg_notification_role_name}"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "autoscaling.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "asg-notification" {
+  role       = "${aws_iam_role.iam_for_asg_notification.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AutoScalingNotificationAccessRole"
 }

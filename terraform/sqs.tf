@@ -10,10 +10,11 @@ data "template_file" "sqs-policy" {
 }
 
 resource "aws_sqs_queue" "lifecycle-scale-in" {
-  name                      = "asg-lifecycle-scale-in"
-  delay_seconds             = 0
-  max_message_size          = 262144
-  message_retention_seconds = 86400
-  receive_wait_time_seconds = 0
-  policy                    = "${data.template_file.sqs-policy.rendered}"
+  name                       = "asg-lifecycle-scale-in"
+  delay_seconds              = 0
+  max_message_size           = 262144
+  message_retention_seconds  = 86400
+  receive_wait_time_seconds  = 0
+  policy                     = "${data.template_file.sqs-policy.rendered}"
+  visibility_timeout_seconds = 600
 }

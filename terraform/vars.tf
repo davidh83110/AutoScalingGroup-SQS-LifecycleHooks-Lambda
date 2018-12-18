@@ -2,13 +2,9 @@ variable "AWS_REGION" {
   default = "ap-southeast-1"
 }
 
-variable "asg_name" {
-  default = "EC2ContainerService-api-production-asg"
-}
+variable "asg_name" {}
 
-variable "account_id" {
-  default = "990090895087"
-}
+variable "account_id" {}
 
 variable "lifecycle_name" {
   default = "scale-in-lifecycle"
@@ -16,6 +12,10 @@ variable "lifecycle_name" {
 
 variable "lambda_role_name" {
   default = "LifecycleSQSLambdaRole"
+}
+
+variable "asg_notification_role_name" {
+  default = "AutoScalingNotificationAccessRole"
 }
 
 variable "lambda_function_name" {
