@@ -12,7 +12,7 @@
         "Resource": "arn:aws:sqs:${region}:${account_id}:${lifecycle_name}",
         "Condition": {
             "ArnEquals": {
-            "aws:SourceArn": "${asg_arn}"
+            "aws:SourceArn": "arn:aws:autoscaling:${region}:${account_id}:autoScalingGroup:*"
             }
         }
         }
