@@ -1,6 +1,7 @@
-## AutoScalingGroup Lifecycle Hooks with Lambda and SQS
+# AutoScalingGroup Lifecycle Hooks with Lambda and SQS
 
----
+[![Build Status](https://travis-ci.org/davidh83110/AutoScalingGroup-SQS-LifecycleHooks-Lambda.svg?branch=master)](https://travis-ci.org/davidh83110/AutoScalingGroup-SQS-LifecycleHooks-Lambda)
+
 ### Environment
 - Python 3.6
 - AWS Lambda
@@ -10,7 +11,6 @@
 - boto3
 - unittest
 - Pipelines only update Lambda code, won't apply any changes on terrform scripts
- 
 ---
 
 ### AWS
